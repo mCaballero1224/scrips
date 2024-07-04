@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Source: https://unix.stackexchange.com/questions/470054/check-for-disks-added-to-the-system
+#
+# get all disks into an array
+ls /dev/sd* | grep -v '[0-9]'
+disks=($(ls /dev/sd* | grep -v '[0-9]'))
+
+# loop over disks in array
+for i in $($(which echo) ${disks[@]}); do
+	#check if it has a partition
+	diskcheck=$(ls ${i}* | grep '[0-9]')
+	$(which echo) ${disks[i]}
+	# if not, print it
+	if [ -z "$diskcheck" ]; then
+		echo $i
+	fi
+done
+
