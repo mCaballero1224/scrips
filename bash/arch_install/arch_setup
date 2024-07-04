@@ -1,19 +1,68 @@
 #!/bin/bash
 
-# Source: https://unix.stackexchange.com/questions/470054/check-for-disks-added-to-the-system
-#
-# get all disks into an array
-ls /dev/sd* | grep -v '[0-9]'
-disks=($(ls /dev/sd* | grep -v '[0-9]'))
+# Script for automating an Arch Linux installation
 
-# loop over disks in array
-for i in $($(which echo) ${disks[@]}); do
-	#check if it has a partition
-	diskcheck=$(ls ${i}* | grep '[0-9]')
-	$(which echo) ${disks[i]}
-	# if not, print it
-	if [ -z "$diskcheck" ]; then
-		echo $i
-	fi
-done
+# Check if script is being run as root
+if [[ $EUID -ne 0 ]]; then
+	$(which echo) "This script must be run as root"
+	exit 1
+fi
 
+
+# Update the system clock
+# timedatectl set-ntp true
+
+read -p "Enter size of '/boot' partition (MiB): " boot_size
+read -p "Enter size of 'SWAP' partition (MiB): " swap_size 
+read -p "Enter size of '/' partition (MiB): " root_size
+read -p "Enter size of '/home' partition (MiB): " home_size 
+
+
+boot_end=$(($boot_size+1))
+
+swap_start=$boot_end
+swap_end=$(($swap_start+$swap_size))
+
+root_start=$swap_end
+root_end=$(($root_start+$root_size))
+
+home_start=$root_end
+
+if [ "rest" != "$home_size" ]
+then
+	home_end=$(($home_start+$home_size))
+fi
+
+boot_end="${boot_end}MiB"
+
+swap_start="${swap_start}MiB"
+swap_end="${swap_end}MiB"
+
+root_start="${root_start}MiB"
+root_end="${root_end}MiB"
+
+home_start="${home_start}MiB"
+if [ "rest" != "$home_size" ]
+then
+home_end="${home_end}MiB"
+else
+	home_end="100%"
+fi
+
+# Partitioning
+ parted -- script /dev/sda \ 
+	mklabel gpt \ 
+	mkpart primary fat32 1MiB $boot_end \ 
+	set 1 boot on \ 
+	name 1 "EFI System Partition" 
+	mkpart primary linux-swap $swap_start $swap_end \ 
+	set 2 swap on \ 
+	name 1 "Linux Swap" 
+	mkpart primary ext4 $root_start $root_end \ 
+	set 3 root on \ 
+	name 1 "Arch Linux Root" 
+	mkpart primary ext4 $home_start $home_end \ 
+	set 3 root on \ 
+	name 1 "Arch Linux Root" 
+
+$(which lsblk)
