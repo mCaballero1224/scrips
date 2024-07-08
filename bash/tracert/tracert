@@ -1,0 +1,22 @@
+#!/bin/bash
+
+raw_out=raw_output.log
+ov=overview.log
+error_log=error.log
+
+if [ $# -ne 1 ];
+then
+	echo "No IP address or hostname given."
+	exit 1
+fi
+
+
+$(which echo) "Traceroute Output: "
+traceroute $1 | fold -w 80 -s > $raw_out
+cat $raw_out
+
+$(which echo) "Analysis:"
+
+exit 0
+
+

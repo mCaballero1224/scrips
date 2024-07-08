@@ -1,0 +1,34 @@
+traceroute to engr.oregonstate.edu (128.193.40.63), 30 hops max, 60 byte packets
+ 1  _gateway (192.168.1.1)  2.097 ms  2.081 ms  2.069 ms
+ 2  * * *
+ 3  lag-52-10.knwcwa2302h.netops.charter.com (96.34.104.186)  17.479 ms  17.466 
+ms  17.453 ms
+ 4  lag-22.crr02knwcwa.netops.charter.com (96.34.109.210)  17.440 ms  17.427 ms 
+ 17.413 ms
+ 5  lag-25.rcr01ptldorpb.netops.charter.com (159.111.174.48)  28.354 ms  28.340 
+ms  28.327 ms
+ 6  lag-807.bbr01sttlwa.netops.charter.com (96.34.1.16)  28.313 ms  26.257 ms  
+26.237 ms
+ 7  lag-801.prr01sttlwa.netops.charter.com (96.34.3.29)  26.226 ms  25.315 ms  
+25.280 ms
+ 8  six.tr-cps.internet2.edu (206.81.80.77)  25.266 ms  25.252 ms  25.238 ms
+ 9  fourhundredge-0-0-0-20.4079.core2.seat.net.internet2.edu (163.253.1.180)  
+27.362 ms  28.635 ms  28.601 ms
+10  fourhundredge-0-0-0-0.4079.core1.port.net.internet2.edu (163.253.1.230)  
+29.916 ms  29.903 ms  29.888 ms
+11  port-psu-pe-01.net.linkoregon.org (207.98.127.252)  28.546 ms  28.532 ms  
+20.531 ms
+12  eugn-oh-vpn-01.net.linkoregon.org (207.98.126.3)  22.679 ms  29.463 ms  
+29.446 ms
+13  corv-kerr-pe-01.net.linkoregon.org (207.98.126.87)  26.966 ms  27.345 ms  
+23.057 ms
+14  corv-kerr-pe-02.net.linkoregon.org (207.98.127.241)  23.023 ms  26.852 ms  
+26.837 ms
+15  osu-kerr-gw.net.linkoregon.org (207.98.119.183)  25.575 ms  25.537 ms  
+25.522 ms
+16  mchub1-HUB.cr.net.oregonstate.edu (128.193.88.34)  27.203 ms  25.002 ms  
+26.356 ms
+17  dear202d-9k.engr.oregonstate.edu (128.193.88.10)  32.396 ms  32.367 ms  
+32.355 ms
+18  webfront.engr.oregonstate.edu (128.193.40.63)  24.528 ms  24.494 ms  27.399 
+ms
