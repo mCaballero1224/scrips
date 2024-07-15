@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# binit: takes a file and throws it in the bin(aries)
+
+# define your bin folder here
+bin_folder='/usr/local/bin'
+
+if ! [[ -z $1 ]]; then
+	# copy file given in the argument to the bin folder
+	cp -v $1 $bin_folder
+	exit 0
+else
+	# if no argument found, print usage to stderr and exit
+	>&2 echo "Usage: binit [FILE]"
+	exit 1
+fi
