@@ -1,68 +1,64 @@
 #!/bin/bash
 
 # Script for automating an Arch Linux installation
+# Assumes that you've already done a base install
 
-# Check if script is being run as root
-if [[ $EUID -ne 0 ]]; then
-	$(which echo) "This script must be run as root"
-	exit 1
-fi
+# base packages to install (basic dependencies, xorg, text-editor, etc.)
+base_packages=(
+	"git"
+	"neovim"
+	"firefox"
+	"libx11"
+	"libxft"
+	"xorg-server"
+	"xorg-xinit"
+	"terminus-font"
+)
+
+packages=(
+	"tmux"
+	"htop"
+	"neofetch"
+)
+
+dotfiles="https://github.com/mCaballero1224/dotfiles.git"
 
 
-# Update the system clock
-# timedatectl set-ntp true
-
-read -p "Enter size of '/boot' partition (MiB): " boot_size
-read -p "Enter size of 'SWAP' partition (MiB): " swap_size 
-read -p "Enter size of '/' partition (MiB): " root_size
-read -p "Enter size of '/home' partition (MiB): " home_size 
 
 
-boot_end=$(($boot_size+1))
+git_repos=(
+	"https://
+)
 
-swap_start=$boot_end
-swap_end=$(($swap_start+$swap_size))
+# Update/synchronize the system
+$(which echo) "Updating system..."
+sudo pacman -Syu
 
-root_start=$swap_end
-root_end=$(($root_start+$root_size))
+# Set locale
 
-home_start=$root_end
+# Set timezone
 
-if [ "rest" != "$home_size" ]
-then
-	home_end=$(($home_start+$home_size))
-fi
+# Install base packages
+$(which echo) "Installing base packages..."
 
-boot_end="${boot_end}MiB"
+for i in "${!base_packages[@]}"
+do
+	sudo pacman -S $(base_packages[i])
+done
 
-swap_start="${swap_start}MiB"
-swap_end="${swap_end}MiB"
+# Create primary user
+read -p "Enter username for primary user: " username
+read -p "Enter password for '${username}': " user_pass
+$(which echo) "Creating user '${username}'..."
 
-root_start="${root_start}MiB"
-root_end="${root_end}MiB"
+# Give primary user admin priveleges
+$(which echo) "useradd -m -G storage,power,video,wheel ${username} -p {user_pass} -s /bin/bash"
 
-home_start="${home_start}MiB"
-if [ "rest" != "$home_size" ]
-then
-home_end="${home_end}MiB"
-else
-	home_end="100%"
-fi
+# Download dotfiles
+$(which git) clone $(dotfiles)
 
-# Partitioning
- parted -- script /dev/sda \ 
-	mklabel gpt \ 
-	mkpart primary fat32 1MiB $boot_end \ 
-	set 1 boot on \ 
-	name 1 "EFI System Partition" 
-	mkpart primary linux-swap $swap_start $swap_end \ 
-	set 2 swap on \ 
-	name 1 "Linux Swap" 
-	mkpart primary ext4 $root_start $root_end \ 
-	set 3 root on \ 
-	name 1 "Arch Linux Root" 
-	mkpart primary ext4 $home_start $home_end \ 
-	set 3 root on \ 
-	name 1 "Arch Linux Root" 
-
-$(which lsblk)
+# Download git repos 
+for i in "${!git_repos[@]}"
+do
+	$(which git) clone $(git_repo[i])
+done
