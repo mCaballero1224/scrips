@@ -4,7 +4,7 @@ Binit takes your program, and throws it in the bin. Specifically, it copies a fi
 
 ## Installation
 
-Download the script
+Download the script into the `/usr/local/bin` directory.
 
 ```
 sudo curl -L https://raw.githubusercontent.com/mCaballero1224/scripts/main/bash/binit/binit -o /usr/local/bin/binit
@@ -18,8 +18,8 @@ chmod +x /usr/local/bin/binit
 
 ## Usage
 
-Run the script like you would any program, giving it the file you'd like to place in the binary directory.
+Run the script like you would any program, giving it the file you'd like to place in the binary directory. You'll likely have to run it with `sudo` since it's copying to a binary directory unless you're running it as root.
 
 ```
-binit /home/mCaballero1224/Development/some_project/some_executable
+sudo binit /home/mCaballero1224/Development/some_project/some_executable
 ```
