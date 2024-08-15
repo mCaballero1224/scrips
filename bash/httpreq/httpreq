@@ -1,0 +1,57 @@
+#!/bin/bash
+
+data_flag=false
+headers_flag=false
+method=""
+data_flag=""
+custom_headers-""
+download_filename=""
+
+echo "=== HTTP REQ ==="
+echo "Enter a number to choose from options listed below:"
+echo "1) Download a file"
+echo "2) Send an HTTP request"
+
+read -rp "Enter number: " user_input
+
+if [[ ! "$user_input" =~ ^[0-2]+$ ]]; then
+	echo "Invalid input"
+	exit 1
+# Walk user through download
+elif [ "$user_input" -eq 1 ]; then
+	read -rp "Enter download link: " download_link
+	read -rp "Enter custom filename (leave blank for default): " download_filename
+	echo "Downloading file..."
+	# if optional filename is blank, then download the file with the default name
+	if [ -z "${download_filename}" ]; then
+		curl -LO "$download_link"
+	# otherwise, download it with the custom filename
+	else
+		curl -L "$download_link" -o "$download_filename"
+	fi
+	echo "Download complete!"
+	exit 0
+# Walk user through constructing HTTP request
+elif [ "$user_input" -eq 2 ]; then
+	# Determine request method
+	echo "Choose request method"
+	echo "1) GET"
+	echo "2) POST"
+	echo "3) PUT"
+	echo "4) DELETE"
+
+	read -rp "Enter number: " method
+	echo "$method"
+
+	if [ "$method" -eq 1 ]; then
+		method="GET"
+	elif [ "$method" -eq 2 ]; then
+		method="POST"
+	elif [ "$method" -eq 3 ]; then
+		method="PUT"
+	elif [ "$method" -eq 4 ]; then
+		method="DELETE"
+	fi
+
+	read -rp "Set custom headers? (y/n): " 
+fi
