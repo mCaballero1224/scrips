@@ -1,0 +1,15 @@
+#!/bin/sh
+
+
+image_array=( $(docker image list --format 'table {{.ID}}' | sed '1d') )
+
+for i in "${!image_array[@]}"
+do
+	# delete all images
+	docker rmi "${image_array[i]}"
+done
+
+# remove all unused containrs
+docker container prune
+
+
